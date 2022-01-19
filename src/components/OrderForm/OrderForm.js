@@ -6,8 +6,15 @@ class OrderForm extends Component {
     this.props = props;
     this.state = {
       name: '',
-      ingredients: []
+      ingredients: [],
+      error: ''
     };
+  }
+
+  displayError () {
+    if (this.state.error) {
+      return (<p>{this.state.error}</p>)
+    }
   }
 
   handleNameChange = (event) => {
@@ -33,7 +40,7 @@ class OrderForm extends Component {
           if (response) {
             this.clearInputs();
           } else {
-            console.error('Could not post order')
+            this.setState({error: 'Could not post order'})
           }
         })
     }
@@ -70,6 +77,7 @@ class OrderForm extends Component {
         <button onClick={event => this.handleSubmit(event)}>
           Submit Order
         </button>
+        {this.displayError()}
       </form>
     )
   }
