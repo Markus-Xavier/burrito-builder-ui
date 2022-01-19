@@ -28,6 +28,7 @@ class OrderForm extends Component {
   handleSubmit = event => {
     event.preventDefault();
     if (this.state.name && this.state.ingredients.length) {
+      this.props.handleAddOrder({name: this.state.name, ingredients: this.state.ingredients});
       this.clearInputs();
     }
 
