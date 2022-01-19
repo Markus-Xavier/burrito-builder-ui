@@ -44,6 +44,7 @@ class OrderForm extends Component {
           }
         })
     }
+    this.setState({error: 'Please add a name and ingredients'})
   }
 
   clearInputs = () => {
