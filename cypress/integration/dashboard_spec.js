@@ -1,7 +1,11 @@
-describe('Burrito Builder Dashboard - No Saved Data', () => {
+describe('Burrito Builder Dashboard', () => {
   beforeEach(() => {
     cy.intercept('GET', 'http://localhost:3001/api/v1/orders', {
       body: {"orders": []} 
+    })
+
+    cy.intercept('POST', 'http://localhost:3001/api/v1/orders', (req) => {
+      return {body: {"id": 1, ...req.body}}
     })
   })
 
@@ -37,7 +41,33 @@ describe('Burrito Builder Dashboard - No Saved Data', () => {
   })
 
   it('As a user I can submit my form data and have it show as an order on the page', () => {
+    cy.contains('Submit Order')
+      .click()
 
+    cy.get('div[class="order"]')
+      .should('exist')
+      .contains('Dog Boy')
+
+    cy.get('div[class="order"]')
+      .children('ul')
+        .children('li')
+        .should('have.length', 2)
+  })
+
+  it('As a user when I refresh the page my order should persist', () => {
+    cy.intercept('GET', 'http://localhost:3001/api/v1/orders', {
+      body: {"orders": [{"id": 1, "name": "Dog Boy", "ingredients": ["steak", "lettuce"]}]} 
+    })
+    cy.reload()
+
+    cy.get('div[class="order"]')
+      .should('exist')
+      .contains('Dog Boy')
+
+    cy.get('div[class="order"]')
+      .children('ul')
+        .children('li')
+        .should('have.length', 2)
   })
 })
 
