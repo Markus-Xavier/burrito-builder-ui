@@ -11,8 +11,11 @@ class App extends Component {
   }
 
   handleAddOrder = (orderData) => {
-    postOrder(orderData)
-      .then(response => this.setState({orders: [...this.state.orders, response]}))
+    return postOrder(orderData)
+      .then(response => {
+        this.setState({orders: [...this.state.orders, response]})
+        return response
+      })
       .catch(error => console.log(error))
   }
 
