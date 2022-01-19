@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
-import {getOrders, postOrder} from '../../apiCalls';
+import {getOrders, postOrder, deleteOrder} from '../../apiCalls';
 import Orders from '../../components/Orders/Orders';
 import OrderForm from '../../components/OrderForm/OrderForm';
 
@@ -19,6 +19,15 @@ class App extends Component {
       .catch(error => console.log(error))
   }
 
+  handleDeleteOrder = (orderId) => {
+    return deleteOrder(orderId)
+      .then(response => {
+        if (response === 204) {
+          console.log('Dog')
+        }
+      })
+  }
+
   componentDidMount() {
     getOrders()
       .then(data => this.setState({orders: data.orders}))
@@ -33,7 +42,7 @@ class App extends Component {
           <OrderForm handleAddOrder={this.handleAddOrder}/>
         </header>
 
-        <Orders orders={this.state.orders}/>
+        <Orders orders={this.state.orders} handleDeleteOrder={this.handleDeleteOrder}/>
       </main>
     );
   }

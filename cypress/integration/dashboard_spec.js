@@ -4,9 +4,12 @@ describe('Burrito Builder Dashboard', () => {
       body: {"orders": []} 
     })
 
-    cy.intercept('POST', 'http://localhost:3001/api/v1/orders', (req) => {
-      return {body: {"id": 1, ...req.body}}
-    })
+    cy.intercept('POST', 'http://localhost:3001/api/v1/orders', {
+
+        body: {"id": 1, "name": "Dog Boy", "ingredients": ["steak", "lettuce"]},
+        statusCode: 201
+    }
+    )
   })
 
   it('As a user upon site load I see no orders', () => {
